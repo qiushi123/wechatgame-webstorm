@@ -1,6 +1,7 @@
 import {ResourceLoader} from "./base/ResourceLoader";
-import {Director} from "./Director";
+import {DataStore} from "./base/DataStore";
 import {BackGround} from "./runtime/BackGround";
+import {Director} from "./Director";
 
 export class Main {
     constructor() {
@@ -10,14 +11,21 @@ export class Main {
         const loader = ResourceLoader.create();
         loader.onLoaded(map => this.onResourceFirstLoaded(map));
 
-        console.log(window.innerWidth);
-        console.log(window.innerHeight);
+        this.dataStore = DataStore.getInstance();
+
     }
 
     onResourceFirstLoaded(map) {
-        let background=new BackGround(this.context,map.get('background'));
-        background.draw();
+        this.dataStore.ctx = this.context;
+        this.dataStore.res = map;
+        this.init();
     };
+
+    init() {
+        this.dataStore.put('background', BackGround);
+        console.log(typeof BackGround);
+        Director.getInstance().run();
+    }
 
 
 }

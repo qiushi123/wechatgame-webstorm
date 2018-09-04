@@ -1,12 +1,19 @@
+import {DataStore} from "./base/DataStore";
+
 export class Director {
 
     constructor(){
-        console.log("构造函数执行")
+        this.dataStore=DataStore.getInstance();
     }
     static getInstance(){
         if (!Director.instance){
             Director.instance=new Director();
         }
         return Director.instance;
+    }
+
+    run(){
+      const backgroundSprite=this.dataStore.get('background');
+        backgroundSprite.draw();
     }
 }
